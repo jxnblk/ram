@@ -1,9 +1,22 @@
 const React = require('react')
 const h = React.createElement
 const log = require('electron-log')
+const open = require('opn')
+const openBrowser = require('react-dev-utils/openBrowser')
 const {
-  Box
+  Box,
+  Flex,
+  Heading,
+  NavLink,
+  Link: RebassLink,
+  BlockLink,
+  Text,
+  Pre,
+  Button,
+  ButtonTransparent,
+  Image,
 } = require('rebass')
+const RefreshIcon = require('rmdi/lib/Refresh').default
 
 const {
   pushLog,
@@ -49,7 +62,10 @@ class Project extends React.Component {
         }
       })
 
-      // promise.then(res => {})
+      promise.catch(err => {
+        this.setState({ listening: false })
+      })
+
       const { child } = promise
 
       child.on('exit', () => {
@@ -84,36 +100,102 @@ class Project extends React.Component {
 
     if (!project) return false
     const { name, dirname, created } = project
+    const url = `http://localhost:3000`
 
     return h(Layout, this.props,
-      h(Link, { to: '/', }, 'Back'),
-      h('h1', null, name),
-      h('pre', null, `${dirname} (${created})`),
-      h('button', {
-        disabled: child,
-        onClick: this.start
-      }, 'Start'),
-      h('button', {
-        disabled: !child,
-        onClick: this.stop
-      }, 'Stop'),
-      listening && h(Box, { p: 3 },
-        h(Preview, {
-          innerRef: ref => this.preview = ref,
-          onCapture: this.handleCapture
-        }),
-        h('button', {
-          onClick: e => {
-            this.preview && this.preview.reload()
-          }
-        }, 'Refresh')
-      ),
-      h('hr'),
-      h('button', {
-        onClick: e => {
-          update(removeProject(name))
-        }
-      }, 'remove')
+      h(Box, {
+        px: 3,
+        pb: 4,
+      },
+        h(Flex, {
+          alignItems: 'center',
+          mb: 4
+        },
+          h(Box, {},
+            h(NavLink, { is: Link, to: '/', px: 0 }, 'Back'),
+            h(Heading, {
+              is: 'h1',
+              fontSize: 6,
+            }, name),
+            h(Pre, { fontSize: 0 },
+              dirname,
+              ' ',
+              h(RebassLink, {
+                fontSize: 0,
+                href: '#!',
+                onClick: e => {
+                  e.preventDefault()
+                  open(`file://${dirname}`)
+                }
+              }, 'Open in Finder'),
+              ' ',
+              h(RebassLink, {
+                href: '#!',
+                disabled: !listening,
+                color: listening ? 'cyan' : 'darken',
+                onClick: e => openBrowser(url),
+                children: url
+              })
+            ),
+          ),
+          h(Box, { mx: 'auto' }),
+          h(Button, {
+            onClick: this.start,
+            disabled: child,
+            color: 'black',
+            bg: 'cyan'
+          }, 'Start'),
+          h(Button, {
+            disabled: !child,
+            onClick: this.stop,
+            ml: 3,
+            color: 'black',
+            bg: 'red',
+            style: {
+            }
+          }, 'Stop')
+        ),
+        h(Box, {},
+          listening
+            ? h(Box, null,
+                h(Preview, {
+                  innerRef: ref => this.preview = ref,
+                  onCapture: this.handleCapture
+                })
+                /* h(ButtonTransparent, {
+                    onClick: e => { this.preview && this.preview.reload() }
+                  }, h(RefreshIcon, {})) */
+              )
+          : project.thumbnail
+            ? h(Image, {
+              src: project.thumbnail,
+              width: 320,
+              height: 160
+            })
+            : h(Box, {
+                bg: 'darken',
+                width: 320,
+                style: {
+                  height: 160
+                }
+              })
+        )
+
+        /*
+          h(Box, {
+            py: 3
+          },
+            h(NavLink, {
+              color: 'red',
+              fontSize: 0,
+              px: 0,
+              onClick: e => {
+                update(removeProject(name))
+              }
+            }, 'Remove Project')
+          )
+        */
+      )
     )
   }
 }

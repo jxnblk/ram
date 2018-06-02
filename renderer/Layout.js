@@ -13,7 +13,11 @@ module.exports = props => {
       height: 'calc(100vh - 40px)'
     }
   },
-    h(Box, { width: 1, flex: '1 1 auto' },
+    h(Box, { width: 1, flex: '1 1 auto',
+      style: {
+        overflow: 'auto'
+      }
+    },
       props.children
     ),
     h(Box, { width: 1, flex: 'none' },

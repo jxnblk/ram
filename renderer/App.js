@@ -4,11 +4,12 @@ const path = require('path')
 const log = require('electron-log')
 const semver = require('semver')
 const { Provider, Box } = require('rebass')
+const theme = require('./theme')
 
 const run = require('./spawn')
 const Menu = require('./Menu')
 const StoreEffect = require('./StoreEffect')
-const { pushLog, setMode } = require('./updaters')
+const { pushLog, setMode, clearError } = require('./updaters')
 const { modes } = require('./constants')
 const Context = require('./Context')
 
@@ -65,6 +66,7 @@ class App extends Component {
       dirname,
       projects = [],
       recents = [],
+      err,
       update
     } = this.state
 
@@ -78,14 +80,19 @@ class App extends Component {
         break
     }
 
-    return h(Provider, null,
+    return h(Provider, { theme },
       h(Context.Provider, { value: this.state },
         h(TitleBar, this.state),
+        err && h(Box, {
+          bg: 'red',
+          color: 'black',
+          p: 3,
+          onClick: e => update(clearError)
+        }, err),
         view,
-
-        // h('pre', null, JSON.stringify(this.state, null, 2)),
         h(Menu, this.state),
-        h(StoreEffect, this.state)
+        h(StoreEffect, this.state),
+        // h('pre', null, JSON.stringify(this.state, null, 2)),
       )
     )
   }

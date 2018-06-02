@@ -30,48 +30,52 @@ const config = props => {
         { role: 'quit' }
       ]
     },
-    {
-      label: 'File',
-      submenu: [
-        {
-          label: 'New...',
-          visible: false,
-          accelerator: 'Cmd+N',
-          click: e => dialogs.newProject(props, (err, dirname) => {
-            alert(dirname)
-            // todo create new file in folder
-          })
-        },
-        {
-          label: 'Open...',
-          accelerator: 'Cmd+O',
-          click: e => dialogs.openDirectory(props, (err, dirname) => {
-            update(openDirectory(dirname))
-          })
-        },
-        {
-          label: 'Open Recent',
-          submenu: [
-            ...recents.map(file => ({
-              label: path.basename(file),
-              click: e => {
-                update(openDirectory(file))
+    /*
+     * todo
+      {
+        label: 'File',
+        submenu: [
+          {
+            label: 'New...',
+            visible: false,
+            accelerator: 'Cmd+N',
+            click: e => dialogs.newProject(props, (err, dirname) => {
+              alert(dirname)
+              // todo create new file in folder
+            })
+          },
+          {
+            label: 'Open...',
+            accelerator: 'Cmd+O',
+            click: e => dialogs.openDirectory(props, (err, dirname) => {
+              update(openDirectory(dirname))
+            })
+          },
+          {
+            visible: false,
+            label: 'Open Recent',
+            submenu: [
+              ...recents.map(file => ({
+                label: path.basename(file),
+                click: e => {
+                  update(openDirectory(file))
+                }
+              })),
+              { type: 'separator' },
+              {
+                label: 'Clear List',
+                click: e => {
+                  update(setStore({ recents: [] }))
+                }
               }
-            })),
-            { type: 'separator' },
-            {
-              label: 'Clear List',
-              click: e => {
-                update(setStore({ recents: [] }))
-              }
-            }
-          ]
-        },
-        { type: 'separator' },
-        { type: 'separator' },
-        { role: 'close' }
-      ]
-    },
+            ]
+          },
+          { type: 'separator' },
+          { type: 'separator' },
+          { role: 'close' }
+        ]
+      },
+    */
     { role: 'editMenu' },
     {
       label: 'View',
@@ -83,25 +87,31 @@ const config = props => {
         { role: 'togglefullscreen' },
       ]
     },
-    {
-      label: 'npm',
-      submenu: [
-        {
-          label: 'Install Dependency',
-          enabled: !!pkg,
-          click: e => {
-            alert('todo')
+    /* todo
+      {
+        label: 'npm',
+        submenu: [
+          {
+            label: 'Install Dependency',
+            enabled: !!pkg,
+            click: e => {
+              alert('todo')
+            }
           }
-        }
-      ]
-    },
+        ]
+      },
+    */
     { role: 'windowMenu' },
     {
       role: 'help',
       submenu: [
         {
           label: `${app.getName()} Help`,
-          click: e => open('https://github.com/jxnblk/cra-desktop/tree/master/docs')
+          click: e => open('https://github.com/c8r/ram/tree/master/docs')
+        },
+        {
+          label: 'Create React App Help',
+          click: e => open('https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md')
         },
         { type: 'separator' },
         { role: 'toggledevtools' },

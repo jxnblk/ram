@@ -15,6 +15,7 @@ const run = (cmd, args, opts = {}) => {
 
     child.on('error', err => {
       log.error(err)
+      reject(err)
     })
 
     child.on('close', code => {

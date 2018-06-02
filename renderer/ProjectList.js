@@ -1,8 +1,17 @@
 const React = require('react')
 const {
+  Box,
+  Flex,
+  Card,
+  Text,
+  Heading,
+  BlockLink,
+  Button,
+  Image,
 } = require('rebass')
 const { setMode } = require('./updaters')
 const Link = require('./Link')
+const Empty = require('./Empty')
 
 const h = React.createElement
 
@@ -14,33 +23,65 @@ module.exports = ({
   recents = [],
   update
 }) => (
-  h('div', null,
-    h('h1', null, 'Projects'),
-    h('ul', null,
+  h(Box, {
+    px: 3,
+    py: 4,
+  },
+    h(Flex, {
+      alignItems: 'center',
+    },
+      h(Heading, {
+        is: 'h1',
+        fontSize: 6,
+      }, 'Projects'),
+      h(Box, { mx: 'auto' }),
+      h(Button, {
+        is: Link,
+        to: 'new',
+        color: 'black',
+        bg: 'cyan'
+      }, 'Create App')
+    ),
+    h(Flex, {
+      mx: -3,
+      flexWrap: 'wrap',
+    },
+      !projects.length && h(Empty),
       projects
         .sort(sortBy(recents))
         .map((project, i) => (
-          h('li', {
-            key: project.dirname
+          h(Box, {
+            key: project.dirname,
+            width: [ 1/2, null, null, 1/3, 1/4 ],
+            p: 3,
           },
-            h(Link, {
+            h(BlockLink, {
+              is: Link,
               to: project.name
             },
-              h('img', {
-                width: 320,
-                height: 160,
-                src: project.thumbnail
-              }),
-              h('div', null,
+              project.thumbnail ? (
+                h(Image, {
+                  width: 1,
+                  height: 160,
+                  src: project.thumbnail
+                })
+              ) : (
+                h(Box, {
+                  width: 320,
+                  bg: 'gray',
+                  style: {
+                    maxWidth: '100%',
+                    height: 160
+                  }
+                })
+              ),
+              h(Text, { fontSize: 0, mt: 2 },
                 project.name
                 //`(${project.created})`
               ),
             )
           )
         ))
-    ),
-    h('div', null,
-      h(Link, { to: 'new' }, 'Create App')
     )
   )
 )

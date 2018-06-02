@@ -30,7 +30,7 @@ let win
 const createWindow = () => {
   const opts = Object.assign({
     minWidth: 768,
-    minHeight: 512,
+    minHeight: 768,
     titleBarStyle: 'hiddenInset',
     vibrancy: 'ultra-dark',
     webPreferences: {

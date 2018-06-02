@@ -1,3 +1,5 @@
+const fs = require('fs')
+const log = require('electron-log')
 const { modes } = require('./constants')
 
 const push = key => value => state => ({
@@ -17,8 +19,17 @@ const setMode = key => state => ({
 const openProject = name => state => {
   const project = state.projects.find(p => p.name === name)
   if (!project) return null
+  if (!fs.existsSync(project.dirname)) {
+    log.error('Cannot find directory:', project.dirname)
+    return {
+      ...removeProject(project.name)(state),
+      err: 'Cannot find directory for ' + project.dirname
+    }
+  }
   return { project, mode: 'detail' }
 }
+
+const clearError = state => ({ err: null })
 
 const removeProject = name => state => {
   const index = state.projects.findIndex(p => p.name === name)
@@ -57,4 +68,5 @@ module.exports = {
   openProject,
   removeProject,
   saveThumbnail,
+  clearError
 }

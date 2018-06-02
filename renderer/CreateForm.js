@@ -6,6 +6,13 @@ const log = require('electron-log')
 const {
   Flex,
   Box,
+  Container,
+  Heading,
+  Text,
+  NavLink,
+  Button,
+  Label,
+  Input,
 } = require('rebass')
 const Link = require('./Link')
 
@@ -67,18 +74,22 @@ class CreateForm extends React.Component {
         }
       })
 
+      const { child } = promise
+
+      child.on('close', () => {
+        log.info('created app', name)
+        const project = {
+          name,
+          dirname: path.join(dirname, name),
+          created: new Date().toString()
+        }
+        this.setState({ pending: false })
+        if (!fs.existsSync(project.dirname)) return
+        this.props.update(pushProject(project))
+        this.props.update(openProject(project.name))
+      })
+
       promise
-        .then(({ stdout }) => {
-          log.info('created app', name, stdout)
-          const project = {
-            name,
-            dirname: path.join(dirname, name),
-            created: new Date().toString()
-          }
-          this.props.update(pushProject(project))
-          this.props.update(openProject(project.name))
-          this.setState({ pending: false })
-        })
         .catch(err => {
           log.error(err)
           this.setState({ pending: false })
@@ -96,35 +107,63 @@ class CreateForm extends React.Component {
 
     return (
       h(Layout, this.props,
-        h(Link, { to: '/' }, 'Back'),
-        h('form', {
-          onSubmit: this.handleSubmit
-        },
-          h('h1', null, 'Create New React App'),
-          h('div', null,
-            h('label', { htmlFor: 'dirname' }, 'Folder'),
-            h('input', {
-              type: 'text',
-              name: 'dirname',
-              value: dirname,
-              readOnly: true
-            }),
-            errors.dirname && h('pre', { style: { color: 'red' } }, errors.dirname)
+        h(Box, { px: 3, pb: 4 },
+          h(NavLink, { is: Link, to: '/', px: 0 }, 'Back'),
+          h(Flex, {
+            alignItems: 'center',
+          },
+            h(Heading, {
+              is: 'h1',
+              fontSize: 6,
+            }, 'Create React App'),
+            h(Box, { mx: 'auto' })
           ),
-          h('div', null,
-            h('label', { htmlFor: 'name' }, 'Name'),
-            h('input', {
-              type: 'text',
-              name: 'name',
-              value: name,
-              disabled: pending,
-              onChange: this.handleChange
-            }),
-            errors.name && h('pre', { style: { color: 'red' } }, errors.name)
-          ),
-          h('button', {
-            disabled: !name || pending
-          }, 'Create App')
+          h(Container, {
+            maxWidth: 640,
+            py: 4,
+          },
+            h('form', {
+              onSubmit: this.handleSubmit
+            },
+              h(Box, { mb: 3 },
+                h(Label, { htmlFor: 'dirname' }, 'Folder'),
+                h(Input, {
+                  type: 'text',
+                  name: 'dirname',
+                  value: dirname,
+                  readOnly: true,
+                  borderColor: 'lightgray'
+                }),
+                errors.dirname && h(Text, { color: 'red' }, errors.dirname)
+              ),
+              h(Box, { mb: 3 },
+                h(Label, { htmlFor: 'name' }, 'Name'),
+                h(Input, {
+                  type: 'text',
+                  name: 'name',
+                  value: name,
+                  disabled: pending,
+                  onChange: this.handleChange,
+                  borderColor: 'lightgray'
+                }),
+                errors.name && h(Text, { color: 'red' }, errors.name)
+              ),
+              h(Button, {
+                color: 'black',
+                bg: 'cyan',
+                mr: 3,
+                disabled: !name || pending
+              }, 'Create App'),
+              h(Button, {
+                is: Link,
+                to: '/',
+                my: 3,
+                color: 'black',
+                bg: 'gray',
+              }, 'Cancel'),
+              pending && h(Text, { color: 'blue' }, 'Creating App...')
+            )
+          )
         )
       )
     )

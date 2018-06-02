@@ -20,6 +20,11 @@ Root.defaultProps = {
 }
 
 module.exports = class extends React.Component {
+  componentDidMount () {
+    if (!this.root) return
+    this.root.scrollTop = this.root.scrollHeight
+  }
+
   componentDidUpdate (prev) {
     if (prev.logs.length === this.props.logs.length) return
     if (!this.root) return

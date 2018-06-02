@@ -1,8 +1,8 @@
 {
-  "name": "cra-desktop",
+  "name": "ram",
   "private": true,
   "version": "0.0.1",
-  "description": "Create and run React applications with no command line or manual setup",
+  "description": "React App Manager: create and run React applications with no command line or manual setup",
   "main": "main/index.js",
   "scripts": {
     "start": "electron main",
@@ -24,6 +24,7 @@
     "opn": "^5.3.0",
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
+    "react-dev-utils": "^5.0.1",
     "react-dom": "^16.4.0",
     "rebass": "^2.0.0-2",
     "rmdi": "^1.0.1",
@@ -31,5 +32,14 @@
     "styled-components": "^2.4.1",
     "styled-system": "^2.2.5",
     "update-electron-app": "^1.2.0"
+  },
+  "build": {
+    "appId": "io.compositor.ram",
+    "productName": "RAM",
+    "copyright": "© 2018 Compositor, Inc. All rights reserved",
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "icon": "node_modules/@compositor/logo/dist/ram.icns"
+    }
   }
 }
