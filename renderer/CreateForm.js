@@ -16,7 +16,7 @@ const {
   pushLog
 } = require('./updaters')
 const { modes } = require('./constants')
-const Logs = require('./Logs')
+const Layout = require('./Layout')
 
 const { createElement: h } = React
 
@@ -95,43 +95,36 @@ class CreateForm extends React.Component {
     } = this.state
 
     return (
-      h(Flex, {},
-        h(Box, { width: 1 },
-          h(Link, { to: '/' }, 'Back'),
-          h('form', {
-            onSubmit: this.handleSubmit
-          },
-            h('h1', null, 'Create New React App'),
-            h('div', null,
-              h('label', { htmlFor: 'dirname' }, 'Folder'),
-              h('input', {
-                type: 'text',
-                name: 'dirname',
-                value: dirname,
-                readOnly: true
-              }),
-              errors.dirname && h('pre', { style: { color: 'red' } }, errors.dirname)
-            ),
-            h('div', null,
-              h('label', { htmlFor: 'name' }, 'Name'),
-              h('input', {
-                type: 'text',
-                name: 'name',
-                value: name,
-                disabled: pending,
-                onChange: this.handleChange
-              }),
-              errors.name && h('pre', { style: { color: 'red' } }, errors.name)
-            ),
-            h('button', {
-              disabled: !name || pending
-            }, 'Create App')
-          )
-        ),
-        h(Box, { width: 320, flex: 'none' },
-          h(Logs, Object.assign({}, this.props, {
-            height: 'calc(100vh - 40px)'
-          }))
+      h(Layout, this.props,
+        h(Link, { to: '/' }, 'Back'),
+        h('form', {
+          onSubmit: this.handleSubmit
+        },
+          h('h1', null, 'Create New React App'),
+          h('div', null,
+            h('label', { htmlFor: 'dirname' }, 'Folder'),
+            h('input', {
+              type: 'text',
+              name: 'dirname',
+              value: dirname,
+              readOnly: true
+            }),
+            errors.dirname && h('pre', { style: { color: 'red' } }, errors.dirname)
+          ),
+          h('div', null,
+            h('label', { htmlFor: 'name' }, 'Name'),
+            h('input', {
+              type: 'text',
+              name: 'name',
+              value: name,
+              disabled: pending,
+              onChange: this.handleChange
+            }),
+            errors.name && h('pre', { style: { color: 'red' } }, errors.name)
+          ),
+          h('button', {
+            disabled: !name || pending
+          }, 'Create App')
         )
       )
     )

@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "cross-spawn": "^6.0.5",
+    "cross-spawn-with-kill": "^1.0.0",
     "electron-log": "^2.2.14",
     "electron-store": "^2.0.0",
     "functional-electron-menu": "^1.0.0",
