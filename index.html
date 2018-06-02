@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<meta charset='utf-8'>
+<style>
+* { box-sizing: border-box }
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  color: #ccc;
+}
+pre, code {
+  font-family: 'Roboto Mono', Menlo, monospace;
+  font-size: 12px;
+}
+</style>
+<div id=root></div>
+<script>
+window.onerror = e => {
+  const { ipcRenderer } = require('electron')
+  console.error('window error', e)
+  ipcRenderer.send('WINDOW_ERROR', e)
+}
+require('./renderer')
+</script>

@@ -1,0 +1,33 @@
+{
+  "name": "cra-desktop",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Create and run React applications with no command line or manual setup",
+  "main": "main/index.js",
+  "scripts": {
+    "start": "electron main",
+    "pack": "build --dir",
+    "build": "build"
+  },
+  "author": "Brent Jackson",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^2.0.2",
+    "electron-builder": "^20.15.1"
+  },
+  "dependencies": {
+    "cross-spawn": "^6.0.5",
+    "electron-log": "^2.2.14",
+    "electron-store": "^2.0.0",
+    "functional-electron-menu": "^1.0.0",
+    "opn": "^5.3.0",
+    "prop-types": "^15.6.1",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "rebass": "^2.0.0-2",
+    "semver": "^5.5.0",
+    "styled-components": "^2.4.1",
+    "styled-system": "^2.2.5",
+    "update-electron-app": "^1.2.0"
+  }
+}
