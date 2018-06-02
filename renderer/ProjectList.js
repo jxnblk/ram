@@ -21,12 +21,20 @@ module.exports = ({
         .sort(sortBy(recents))
         .map((project, i) => (
           h('li', {
-            key: project.dirname + project.created
+            key: project.dirname
           },
             h(Link, {
               to: project.name
             },
-              project.name + `(${project.created})`
+              h('img', {
+                width: 320,
+                height: 160,
+                src: project.thumbnail
+              }),
+              h('div', null,
+                project.name
+                //`(${project.created})`
+              ),
             )
           )
         ))

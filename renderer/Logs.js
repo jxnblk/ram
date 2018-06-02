@@ -15,7 +15,7 @@ const Root = styled(Box)([], {
 Root.defaultProps = {
   p: 2,
   bg: 'rgba(0, 0, 0, 0.5)',
-  color: 'cyan',
+  color: 'white',
   height: '256px'
 }
 
@@ -36,7 +36,8 @@ module.exports = class extends React.Component {
       height,
       innerRef: ref => this.root = ref
     },
-      h(Pre, null,
+      h(Pre, { color: '#666' }, 'Logs'),
+      h(Pre, { color: 'cyan' },
         logs.map((msg, i) => h('span', { key: i + msg }, msg))
       )
     )

@@ -1,17 +1,35 @@
 const React = require('react')
 const h = React.createElement
 const log = require('electron-log')
-const { pushLog, removeProject } = require('./updaters')
+const {
+  Box
+} = require('rebass')
+
+const {
+  pushLog,
+  removeProject,
+  saveThumbnail
+} = require('./updaters')
 const run = require('./spawn')
 const Link = require('./Link')
 const Layout = require('./Layout')
+const Preview = require('./Preview')
+
+const REG = /localhost/
+const PORT = /localhost:[0-9]{4,5}/
+const getPort = str => {
+  const [ url ] = PORT.exec(str)
+  if (!url) return
+  return parseInt(url.replace(/[a-z:]/g, ''))
+}
 
 class Project extends React.Component {
   constructor () {
     super()
 
     this.state = {
-      child: null
+      child: null,
+      listening: false,
     }
 
     this.start = () => {
@@ -21,20 +39,21 @@ class Project extends React.Component {
         cwd: dirname,
         onLog: msg => {
           update(pushLog(msg))
+          if (REG.test(msg)) {
+            const port = getPort(msg)
+            if (port !== 3000) {
+              log.info('port change:', port)
+            }
+            this.setState({ listening: true })
+          }
         }
       })
 
-      promise
-        .then(() => {
-          log.info('app started')
-        })
+      // promise.then(res => {})
       const { child } = promise
 
-      child.on('close', () => {
-        this.setState({ child: null })
-      })
       child.on('exit', () => {
-        this.setState({ child: null })
+        this.setState({ child: null, listening: false })
       })
 
       this.setState({ child })
@@ -44,6 +63,11 @@ class Project extends React.Component {
       const { child } = this.state
       if (!child || !child.kill) return
       child.kill('SIGTERM')
+    }
+
+    this.handleCapture = img => {
+      const { update } = this.props
+      update(saveThumbnail(img))
     }
   }
 
@@ -56,7 +80,7 @@ class Project extends React.Component {
       project,
       update
     } = this.props
-    const { child } = this.state
+    const { child, listening } = this.state
 
     if (!project) return false
     const { name, dirname, created } = project
@@ -73,6 +97,17 @@ class Project extends React.Component {
         disabled: !child,
         onClick: this.stop
       }, 'Stop'),
+      listening && h(Box, { p: 3 },
+        h(Preview, {
+          innerRef: ref => this.preview = ref,
+          onCapture: this.handleCapture
+        }),
+        h('button', {
+          onClick: e => {
+            this.preview && this.preview.reload()
+          }
+        }, 'Refresh')
+      ),
       h('hr'),
       h('button', {
         onClick: e => {

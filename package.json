@@ -26,6 +26,7 @@
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "rebass": "^2.0.0-2",
+    "rmdi": "^1.0.1",
     "semver": "^5.5.0",
     "styled-components": "^2.4.1",
     "styled-system": "^2.2.5",

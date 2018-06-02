@@ -33,6 +33,21 @@ const removeProject = name => state => {
   }
 }
 
+const saveThumbnail = thumbnail => state => {
+  if (!state.project) return null
+  const { dirname } = state.project
+  const index = state.projects.findIndex(p => p.dirname === dirname)
+  if (index < 0) return null
+  return {
+    projects: [
+      ...state.projects.slice(0, index),
+      Object.assign({}, state.projects[index], {
+        thumbnail
+      }),
+      ...state.projects.slice(index + 1),
+    ]
+  }
+}
 
 module.exports = {
   push,
@@ -41,4 +56,5 @@ module.exports = {
   setMode,
   openProject,
   removeProject,
+  saveThumbnail,
 }
