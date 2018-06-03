@@ -7,7 +7,7 @@
 Create and run React applications – no command line or build setup required.
 Powered by [Electron][electron] & [Create React App][cra]
 
-<img src='docs/demo.gif' />
+<img src='docs/ram.gif' />
 
 ## Getting started
 
