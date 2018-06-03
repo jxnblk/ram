@@ -3,6 +3,7 @@ const { ipcRenderer } = require('electron')
 const { app } = require('electron').remote
 const createMenu = require('functional-electron-menu')
 const log = require('electron-log')
+const open = require('react-dev-utils/openBrowser')
 
 const config = props => {
   const {

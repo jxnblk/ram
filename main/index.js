@@ -67,4 +67,7 @@ ipcMain.on('WINDOW_ERROR', (e, err) => {
   log.error(err)
 })
 
-require('update-electron-app')()
+require('update-electron-app')({
+  repo: 'jxnblk/ram',
+  logger: log
+})

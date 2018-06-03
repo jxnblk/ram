@@ -16,11 +16,12 @@ Install the latest version of Node.js (which includes npm) here:
 
 - [Install Node.js][node]
 
-<!--
-[Download][download]
+Download for MacOS:
 
-[download]:
--->
+- [Download][download]
+
+[download]: https://github.com/jxnblk/ram
+
 
 ## Motivation
 
@@ -100,7 +101,7 @@ npm i && npm start
 
 The `main` folder contains modules for the main process,
 and `renderer` includes all files for the renderer process.
-No Babel transpilation is used, so be sure to use Electron-compatible syntax
+No Babel transpilation is used, so be sure to use Electron-compatible modules and syntax.
 
 [MIT License](LICENSE.md)
 
