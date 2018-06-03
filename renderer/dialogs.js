@@ -14,6 +14,21 @@ const openDirectory = (props, cb) => {
   })
 }
 
+const removeProject = (cb) => {
+  dialog.showMessageBox({
+    type: 'question',
+    message: 'Remove project from RAM? This will remove the project from RAM, but will not delete any files.',
+    buttons: [
+      'Cancel',
+      'Remove Project'
+    ]
+  }, (res) => {
+    if (res === 0) return
+    cb(res)
+  })
+}
+
 module.exports = {
-  openDirectory
+  openDirectory,
+  removeProject
 }

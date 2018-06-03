@@ -4,17 +4,22 @@ const { app } = require('electron').remote
 const createMenu = require('functional-electron-menu')
 const log = require('electron-log')
 const open = require('react-dev-utils/openBrowser')
-const { setMode } = require('./updaters')
+const {
+  setMode,
+  pushProject,
+  openProject,
+  removeProject
+} = require('./updaters')
+const dialogs = require('./dialogs')
 
 const config = props => {
   const {
     update,
     dirname,
     pkg = {},
-    store: {
-      recents = [],
-      projects = [],
-    } = {},
+    recents = [],
+    projects = [],
+    project
   } = props
 
   return [
@@ -32,27 +37,32 @@ const config = props => {
         { role: 'quit' }
       ]
     },
-    /*
-     * todo
-      {
-        label: 'File',
-        submenu: [
-          {
-            label: 'New...',
-            visible: false,
-            accelerator: 'Cmd+N',
-            click: e => dialogs.newProject(props, (err, dirname) => {
-              alert(dirname)
-              // todo create new file in folder
-            })
-          },
-          {
-            label: 'Open...',
-            accelerator: 'Cmd+O',
-            click: e => dialogs.openDirectory(props, (err, dirname) => {
-              update(openDirectory(dirname))
-            })
-          },
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'New...',
+          accelerator: 'Cmd+N',
+          click: e => {
+            update(setMode('create'))
+          }
+        },
+        {
+          label: 'Open...',
+          accelerator: 'Cmd+O',
+          click: e => dialogs.openDirectory({ dirname }, (dir) => {
+            const name = path.basename(dir)
+            const project = {
+              name,
+              dirname: dir,
+              created: new Date().toString(),
+              port: 3000
+            }
+            update(pushProject(project))
+            update(openProject(project.name))
+          })
+        },
+        /*
           {
             visible: false,
             label: 'Open Recent',
@@ -72,12 +82,12 @@ const config = props => {
               }
             ]
           },
-          { type: 'separator' },
-          { type: 'separator' },
-          { role: 'close' }
-        ]
-      },
-    */
+        */
+        { type: 'separator' },
+        { type: 'separator' },
+        { role: 'close' }
+      ]
+    },
     { role: 'editMenu' },
     {
       label: 'View',
@@ -89,20 +99,28 @@ const config = props => {
         { role: 'togglefullscreen' },
       ]
     },
-    /* todo
-      {
-        label: 'npm',
-        submenu: [
-          {
-            label: 'Install Dependency',
-            enabled: !!pkg,
-            click: e => {
-              alert('todo')
-            }
+    {
+      label: 'Projects',
+      submenu: [
+        ...projects.map(({ name }) => ({
+          label: name,
+          click: e => {
+            update(openProject(name))
           }
-        ]
-      },
-    */
+        })),
+        { type: 'separator' },
+        {
+          label: 'Remove Project',
+          enabled: !!project,
+          click: e => {
+            dialogs.removeProject(() => {
+              update(removeProject(project.name))
+              update(setMode('index'))
+            })
+          }
+        }
+      ]
+    },
     { role: 'windowMenu' },
     {
       role: 'help',
