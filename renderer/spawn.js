@@ -2,7 +2,9 @@ const spawn = require('cross-spawn-with-kill')
 const log = require('electron-log')
 
 const run = (cmd, args, opts = {}) => {
-  const child = spawn(cmd, args, opts)
+  const child = spawn(cmd, args, Object.assign({}, opts, {
+    // stdio: 'ignore'
+  }))
   const promise = new Promise((resolve, reject) => {
     let stdout = null
     let stderr = null

@@ -16,6 +16,7 @@
     "electron-builder": "^20.15.1"
   },
   "dependencies": {
+    "@compositor/logo": "^1.4.0",
     "cross-spawn": "^6.0.5",
     "cross-spawn-with-kill": "^1.0.0",
     "electron-log": "^2.2.14",
@@ -36,6 +37,7 @@
   "build": {
     "appId": "io.compositor.ram",
     "productName": "RAM",
+    "asar": false,
     "copyright": "© 2018 Compositor, Inc. All rights reserved",
     "mac": {
       "category": "public.app-category.developer-tools",
