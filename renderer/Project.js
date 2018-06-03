@@ -4,6 +4,7 @@ const log = require('electron-log')
 const open = require('opn')
 const openBrowser = require('react-dev-utils/openBrowser')
 const killPort = require('kill-port')
+const readPkg = require('read-pkg-up')
 const {
   Box,
   Flex,
@@ -17,7 +18,8 @@ const {
   ButtonTransparent,
   Image,
 } = require('rebass')
-const RefreshIcon = require('rmdi/lib/Refresh').default
+// const RefreshIcon = require('rmdi/lib/Refresh').default
+const Dependencies = require('./Dependencies')
 
 const {
   pushLog,
@@ -87,15 +89,29 @@ class Project extends React.Component {
       const { update } = this.props
       update(saveThumbnail(img))
     }
+
+    this.readPkg = async () => {
+      const { update, project } = this.props
+      const { dirname } = project
+      if (!dirname) return
+      const { pkg } = await readPkg({ cwd: dirname })
+      update({ pkg })
+    }
+  }
+
+  componentDidMount () {
+    this.readPkg()
   }
 
   componentWillUnmount () {
+    this.props.update({ pkg: null })
     this.stop()
   }
 
   render () {
     const {
       project,
+      pkg,
       update
     } = this.props
     const { child, listening } = this.state
@@ -157,27 +173,32 @@ class Project extends React.Component {
             }
           }, 'Stop')
         ),
-        h(Box, {},
-          listening
-            ? h(Box, null,
-                h(Preview, {
+        h(Flex, { mx: -3 },
+          h(Box, { px: 3, flex: 'none' },
+            listening ? (
+              h(Preview, {
                   innerRef: ref => this.preview = ref,
                   onCapture: this.handleCapture
                 })
-              )
-          : project.thumbnail
-            ? h(Image, {
-              src: project.thumbnail,
-              width: 320,
-              height: 160
-            })
-            : h(Box, {
-                bg: 'darken',
-                width: 320,
-                style: {
+            ) : (
+              project.thumbnail
+                ? h(Image, {
+                  src: project.thumbnail,
+                  width: 320,
                   height: 160
-                }
-              })
+                })
+                : h(Box, {
+                    bg: 'darken',
+                    width: 320,
+                    style: {
+                      height: 160
+                    }
+                  })
+            )
+          ),
+          h(Box, { width: 1, px: 3 },
+            pkg && h(Dependencies, this.props)
+          )
         )
       )
     )

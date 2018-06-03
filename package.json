@@ -28,6 +28,7 @@
     "react": "^16.4.0",
     "react-dev-utils": "^5.0.1",
     "react-dom": "^16.4.0",
+    "read-pkg-up": "^3.0.0",
     "rebass": "^2.0.0-2",
     "rmdi": "^1.0.1",
     "semver": "^5.5.0",
