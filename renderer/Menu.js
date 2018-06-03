@@ -128,7 +128,7 @@ const config = props => {
       submenu: [
         {
           label: `${app.getName()} Help`,
-          click: e => open('https://github.com/c8r/ram/tree/master/docs')
+          click: e => open('https://github.com/jxnblk/ram/tree/master/docs')
         },
         {
           label: 'Create React App Help',
