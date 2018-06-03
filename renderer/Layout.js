@@ -21,9 +21,7 @@ module.exports = props => {
       props.children
     ),
     h(Box, { width: 1, flex: 'none' },
-      h(Logs, Object.assign({}, props, {
-        height: '40vh'
-      }))
+      h(Logs, props)
     )
   )
 }

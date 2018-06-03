@@ -13,7 +13,7 @@ const {
   Button,
   Label,
   Input: RebassInput,
-  Select,
+  Select: RebassSelect,
   Code,
 } = require('rebass')
 const styled = require('styled-components').default
@@ -32,6 +32,11 @@ const Layout = require('./Layout')
 const { createElement: h } = React
 
 const Input = RebassInput.extend([], {
+  backgroundColor: theme.colors.darken,
+  boxShadow: `inset 0 0 0 1px ${theme.colors.lightgray}`,
+})
+
+const Select = RebassSelect.extend([], {
   backgroundColor: theme.colors.darken,
   boxShadow: `inset 0 0 0 1px ${theme.colors.lightgray}`,
 })
@@ -134,7 +139,7 @@ class CreateForm extends React.Component {
             h(Heading, {
               is: 'h1',
               fontSize: 6,
-            }, 'Create React App'),
+            }, 'Create App'),
             h(Box, { mx: 'auto' })
           ),
           h(Container, {
