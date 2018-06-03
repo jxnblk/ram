@@ -19,7 +19,7 @@ Download for MacOS:
 
 - [Download][download]
 
-[download]: https://github.com/jxnblk/ram
+[download]: https://github.com/jxnblk/ram/releases/latest
 
 
 ## Motivation
