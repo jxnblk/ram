@@ -27,6 +27,15 @@ const appTypes = {
       port: 3000,
       run: 'run dev'
     }
+  },
+  gatsby: {
+    name: 'Gatsby App',
+    install: 'gatsby-cli new',
+    defaults: {
+      type: 'gatsby-cli',
+      port: 8000,
+      run: 'run develop'
+    }
   }
 }
 

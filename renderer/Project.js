@@ -193,7 +193,7 @@ class Project extends React.Component {
     const {
       project,
       pkg,
-      update
+      update,
     } = this.props
     const {
       child,
@@ -203,8 +203,8 @@ class Project extends React.Component {
     } = this.state
 
     if (!project) return false
-    const { name, dirname, created } = project
-    const url = `http://localhost:3000`
+    const { name, dirname, created, port = 3000 } = project
+    const url = `http://localhost:${port}`
 
     return h(Layout, this.props,
       h(Box, {
@@ -270,7 +270,8 @@ class Project extends React.Component {
             listening ? (
               h(Preview, {
                   innerRef: ref => this.preview = ref,
-                  onCapture: this.handleCapture
+                  onCapture: this.handleCapture,
+                  port
                 })
             ) : (
               project.thumbnail

@@ -51,6 +51,7 @@ const config = props => {
           label: 'Open...',
           accelerator: 'Cmd+O',
           click: e => dialogs.openDirectory({ dirname }, (dir) => {
+            // todo: attempt to detect project type
             const name = path.basename(dir)
             const project = {
               name,

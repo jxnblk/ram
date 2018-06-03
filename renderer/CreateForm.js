@@ -85,9 +85,10 @@ class CreateForm extends React.Component {
       const { name, type, dirname } = this.state
       const appType = appTypes[type]
       const { install } = appType
-      update(pushLog(['npx', install, name].join(' ')))
+      const args = [ ...install.split(' '), name ]
+      update(pushLog([ 'npx', ...args ].join(' ')))
       update(pushLog(''))
-      const promise = run('npx', [ install, name ], {
+      const promise = run('npx', args, {
         cwd: dirname,
         onLog: msg => {
           update(pushLog(msg))
@@ -156,6 +157,7 @@ class CreateForm extends React.Component {
                   name: 'dirname',
                   value: dirname,
                   readOnly: true,
+                  disabled: pending,
                   onClick: e => {
                     openDirectory({ dirname }, dir => {
                       this.setState({ dirname: dir })
@@ -170,7 +172,8 @@ class CreateForm extends React.Component {
                 h(Select, {
                   name: 'type',
                   value: type,
-                  onChange: this.handleChange
+                  onChange: this.handleChange,
+                  disabled: pending,
                 },
                   appTypes.options.map(({ key, name }) => h('option', {
                     key,
