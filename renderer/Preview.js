@@ -1,5 +1,6 @@
 const React = require('react')
 const { getCurrentWindow } = require('electron').remote
+const log = require('electron-log')
 const h = React.createElement
 
 class Preview extends React.Component {
@@ -13,8 +14,12 @@ class Preview extends React.Component {
 
     this.onLoad = e => {
       const { zoom } = this.props
-      this.root.setZoomFactor(zoom)
-      setTimeout(() => this.capture(), 1000)
+      try {
+        this.root.setZoomFactor(zoom)
+        setTimeout(() => this.capture(), 1000)
+      } catch (err) {
+        log.error(err)
+      }
     }
 
     this.capture = () => {
@@ -45,7 +50,11 @@ class Preview extends React.Component {
   componentDidUpdate () {
     if (!this.root || !this.root.setZoomFactor) return
     const { zoom } = this.props
-    this.root.setZoomFactor(zoom)
+    try {
+      this.root.setZoomFactor(zoom)
+    } catch (err) {
+      log.error(err)
+    }
   }
 
   render () {
