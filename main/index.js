@@ -19,7 +19,6 @@ const store = new Store({
       width: 1280,
       height: 640
     },
-    // todo: fix this
     dirname: app.getPath('home'),
     projects: [],
     recents: [],
@@ -68,5 +67,4 @@ ipcMain.on('WINDOW_ERROR', (e, err) => {
   log.error(err)
 })
 
-// todo: enable in production
-// require('update-electron-app')()
+require('update-electron-app')()

@@ -44,5 +44,13 @@
       "category": "public.app-category.developer-tools",
       "icon": "node_modules/@compositor/logo/dist/ram.icns"
     }
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jxnblk/ram.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jxnblk/ram/issues"
+  },
+  "homepage": "https://github.com/jxnblk/ram#readme"
 }
