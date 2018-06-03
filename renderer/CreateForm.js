@@ -13,6 +13,7 @@ const {
   Button,
   Label,
   Input: RebassInput,
+  Code,
 } = require('rebass')
 const styled = require('styled-components').default
 const Link = require('./Link')
@@ -175,7 +176,11 @@ class CreateForm extends React.Component {
                 color: 'black',
                 bg: 'gray',
               }, 'Cancel'),
-              pending && h(Text, { color: 'blue' }, 'Creating App...')
+              h(Text, { fontSize: 1, my: 2 },
+                'This will run: ',
+                h(Code, { color: 'cyan' }, 'npx create-react-app ' + name)
+              ),
+              pending && h(Text, { color: 'blue' }, 'Creating App...'),
             )
           )
         )

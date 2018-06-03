@@ -13,6 +13,7 @@ const {
   Link: RebassLink,
   BlockLink,
   Text,
+  Code,
   Pre,
   Button,
   ButtonTransparent,
@@ -125,36 +126,15 @@ class Project extends React.Component {
         px: 3,
         pb: 4,
       },
+        h(NavLink, { is: Link, to: '/', px: 0 }, 'Back'),
         h(Flex, {
-          alignItems: 'center',
-          mb: 4
+          alignItems: 'center'
         },
           h(Box, {},
-            h(NavLink, { is: Link, to: '/', px: 0 }, 'Back'),
             h(Heading, {
               is: 'h1',
               fontSize: 6,
             }, name),
-            h(Pre, { fontSize: 0 },
-              dirname,
-              ' ',
-              h(RebassLink, {
-                fontSize: 0,
-                href: '#!',
-                onClick: e => {
-                  e.preventDefault()
-                  open(`file://${dirname}`)
-                }
-              }, 'Open in Finder'),
-              ' ',
-              h(RebassLink, {
-                href: '#!',
-                disabled: !listening,
-                color: listening ? 'cyan' : 'darken',
-                onClick: e => openBrowser(url),
-                children: url
-              })
-            ),
           ),
           h(Box, { mx: 'auto' }),
           h(Button, {
@@ -168,10 +148,37 @@ class Project extends React.Component {
             onClick: this.stop,
             ml: 3,
             color: 'black',
-            bg: 'red',
+            bg: 'magenta',
             style: {
             }
           }, 'Stop')
+        ),
+        h(Flex, { alignItems: 'baseline', mb: 4 },
+          h(Pre, { fontSize: 0 },
+            dirname,
+            ' ',
+            h(RebassLink, {
+              fontSize: 0,
+              href: '#!',
+              onClick: e => {
+                e.preventDefault()
+                open(`file://${dirname}`)
+              }
+            }, 'Open in Finder'),
+            ' ',
+            h(RebassLink, {
+              href: '#!',
+              disabled: !listening,
+              color: listening ? 'cyan' : 'darken',
+              onClick: e => openBrowser(url),
+              children: url
+            })
+          ),
+          h(Box, { mx: 'auto' }),
+          h(Text, { fontSize: 1, my: 2 },
+            'This will run: ',
+            h(Code, { color: 'cyan' }, 'npm start')
+          )
         ),
         h(Flex, { mx: -3 },
           h(Box, { px: 3, flex: 'none' },
@@ -194,7 +201,7 @@ class Project extends React.Component {
                       height: 160
                     }
                   })
-            )
+            ),
           ),
           h(Box, { width: 1, px: 3 },
             pkg && h(Dependencies, this.props)
