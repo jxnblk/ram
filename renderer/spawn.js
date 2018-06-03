@@ -4,13 +4,19 @@ const log = require('electron-log')
 const run = (cmd, args, opts = {}) => {
   const child = spawn(cmd, args, opts)
   const promise = new Promise((resolve, reject) => {
-    let stdout = null
-    let stderr = null
+    let stdout = new Buffer('')
+    let stderr = new Buffer('')
+
     child.stdout && child.stdout.on('data', data => {
       const msg = new Buffer(data).toString()
       opts.onLog && opts.onLog(msg)
-      stdout = stdout || new Buffer('')
       stdout = Buffer.concat([ stdout, data ])
+    })
+
+    child.stderr && child.stderr.on('data', data => {
+      const msg = new Buffer(data).toString()
+      opts.onLog && opts.onLog(msg)
+      stderr = Buffer.concat([ stderr, data ])
     })
 
     child.on('error', err => {
@@ -19,8 +25,8 @@ const run = (cmd, args, opts = {}) => {
     })
 
     child.on('close', code => {
-      stdout = stdout && stdout.toString()
-      stderr = stderr && stderr.toString()
+      stdout = stdout.toString()
+      stderr = stderr.toString()
 
       if (code !== 0) log.error('error')
       resolve({ stdout, stderr })

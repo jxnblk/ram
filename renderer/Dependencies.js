@@ -27,7 +27,6 @@ module.exports = ({
   return h(Root, {
     minHeight: 256
   },
-    h(Heading, { is: 'h3', fontSize: 2, mb: 2 }, 'npm'),
     h(Heading, { is: 'h4', fontSize: 0, mb: 2, color: 'gray' }, 'Dependencies'),
     deps.map(({ name, version }) => h(Pre, { fontSize: 0 },
       name,

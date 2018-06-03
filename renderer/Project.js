@@ -18,6 +18,8 @@ const {
   Button,
   ButtonTransparent,
   Image,
+  Input,
+  Label,
 } = require('rebass')
 // const RefreshIcon = require('rmdi/lib/Refresh').default
 const Dependencies = require('./Dependencies')
@@ -40,6 +42,42 @@ const getPort = str => {
   return parseInt(url.replace(/[a-z:]/g, ''))
 }
 
+const InstallForm = ({
+  name,
+  value,
+  disabled,
+  onChange,
+  onSubmit
+}) => (
+  h(Flex, {
+    is: 'form',
+    py: 2,
+    onSubmit,
+    alignItems: 'baseline'
+  },
+    h(Label, { htmlFor: name, fontSize: 0 }, 'Add dependency:'),
+    h(Input, {
+      width: 192,
+      ml: 2,
+      name,
+      value,
+      onChange,
+      disabled,
+      fontSize: 0,
+      style: {
+        fontFamily: 'Menlo, monospace'
+      }
+    }),
+    h(Button, {
+      disabled,
+      ml: 2,
+      fontSize: 0,
+      color: 'black',
+      bg: value ? 'cyan' : 'gray'
+    }, 'Install')
+  )
+)
+
 class Project extends React.Component {
   constructor () {
     super()
@@ -47,12 +85,15 @@ class Project extends React.Component {
     this.state = {
       child: null,
       listening: false,
+      installing: false,
+      packages: '',
     }
 
     this.start = async () => {
       const { project, update } = this.props
       const { dirname } = project
       const killed = await killPort(3000)
+      update(pushLog('npm start'))
       const promise = run('npm', [ 'start' ], {
         cwd: dirname,
         onLog: msg => {
@@ -98,6 +139,39 @@ class Project extends React.Component {
       const { pkg } = await readPkg({ cwd: dirname })
       update({ pkg })
     }
+
+    this.handleChange = e => {
+      const { name, value } = e.target
+      this.setState({ [name]: value })
+    }
+
+    this.handleInstallSubmit = e => {
+      e.preventDefault()
+      const { update, project: { dirname } } = this.props
+      const { packages } = this.state
+      if (!packages) return
+      log.info('installing packages', packages.split(' '))
+      this.setState({ installing: true })
+      update(pushLog('npm install ' + packages))
+      run('npm', [ 'install', ...packages.split(' ') ], {
+        cwd: dirname,
+        onLog: msg => {
+          update(pushLog(msg))
+        }
+      })
+        .then(() => {
+          log.info('installed', packages)
+          this.setState({
+            installing: false,
+            packages: ''
+          })
+          this.readPkg()
+        })
+        .catch(err => {
+          update({ err: err.toString() })
+          this.setState({ installing: false })
+        })
+    }
   }
 
   componentDidMount () {
@@ -115,7 +189,12 @@ class Project extends React.Component {
       pkg,
       update
     } = this.props
-    const { child, listening } = this.state
+    const {
+      child,
+      listening,
+      installing,
+      packages,
+    } = this.state
 
     if (!project) return false
     const { name, dirname, created } = project
@@ -204,6 +283,14 @@ class Project extends React.Component {
             ),
           ),
           h(Box, { width: 1, px: 3 },
+            h(Heading, { is: 'h3', mr: 3, fontSize: 3 }, 'npm'),
+            h(InstallForm, {
+              disabled: installing,
+              name: 'packages',
+              value: packages,
+              onChange: this.handleChange,
+              onSubmit: this.handleInstallSubmit
+            }),
             pkg && h(Dependencies, this.props)
           )
         )
