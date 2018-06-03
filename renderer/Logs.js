@@ -14,7 +14,6 @@ const Root = styled(Box)([], {
 
 Root.defaultProps = {
   p: 2,
-  bg: 'rgba(0, 0, 0, 0.5)',
   color: 'white',
   height: '256px'
 }

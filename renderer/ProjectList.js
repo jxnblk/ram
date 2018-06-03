@@ -77,7 +77,6 @@ module.exports = ({
               ),
               h(Text, { fontSize: 0, mt: 2 },
                 project.name
-                //`(${project.created})`
               ),
             )
           )

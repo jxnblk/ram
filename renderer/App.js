@@ -13,12 +13,10 @@ const { pushLog, setMode, clearError } = require('./updaters')
 const { modes } = require('./constants')
 const Context = require('./Context')
 
-// UI
 const TitleBar = require('./TitleBar')
 const ProjectList = require('./ProjectList')
 const CreateForm = require('./CreateForm')
 const Project = require('./Project')
-// const Logs = require('./Logs')
 
 const MIN_NPM_VER = '>=5.2.0'
 const MIN_NODE_VER = '>=6.0.0'
@@ -31,7 +29,6 @@ class App extends Component {
       project: null,
       update: (...args) => this.setState(...args)
     })
-    // this.update = (...args) => this.setState(...args)
   }
 
   componentDidMount () {
@@ -92,7 +89,6 @@ class App extends Component {
         view,
         h(Menu, this.state),
         h(StoreEffect, this.state),
-        // h('pre', null, JSON.stringify(this.state, null, 2)),
       )
     )
   }

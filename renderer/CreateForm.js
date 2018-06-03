@@ -12,9 +12,12 @@ const {
   NavLink,
   Button,
   Label,
-  Input,
+  Input: RebassInput,
 } = require('rebass')
+const styled = require('styled-components').default
 const Link = require('./Link')
+const { openDirectory } = require('./dialogs')
+const theme = require('./theme')
 
 const run = require('./spawn')
 const {
@@ -24,8 +27,12 @@ const {
 } = require('./updaters')
 const { modes } = require('./constants')
 const Layout = require('./Layout')
-
 const { createElement: h } = React
+
+const Input = RebassInput.extend([], {
+  backgroundColor: theme.colors.darken,
+  boxShadow: `inset 0 0 0 1px ${theme.colors.lightgray}`,
+})
 
 class CreateForm extends React.Component {
   constructor (props) {
@@ -80,6 +87,8 @@ class CreateForm extends React.Component {
         log.info('created app', name)
         const project = {
           name,
+          type: 'create-react-app',
+          port: 3000,
           dirname: path.join(dirname, name),
           created: new Date().toString()
         }
@@ -99,6 +108,7 @@ class CreateForm extends React.Component {
 
   render () {
     const {
+      update,
       name,
       dirname,
       errors,
@@ -132,7 +142,12 @@ class CreateForm extends React.Component {
                   name: 'dirname',
                   value: dirname,
                   readOnly: true,
-                  borderColor: 'lightgray'
+                  onClick: e => {
+                    openDirectory({ dirname }, dir => {
+                      this.setState({ dirname: dir })
+                      update({ dirname: dir })
+                    })
+                  }
                 }),
                 errors.dirname && h(Text, { color: 'red' }, errors.dirname)
               ),
@@ -144,7 +159,6 @@ class CreateForm extends React.Component {
                   value: name,
                   disabled: pending,
                   onChange: this.handleChange,
-                  borderColor: 'lightgray'
                 }),
                 errors.name && h(Text, { color: 'red' }, errors.name)
               ),

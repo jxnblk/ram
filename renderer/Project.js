@@ -3,6 +3,7 @@ const h = React.createElement
 const log = require('electron-log')
 const open = require('opn')
 const openBrowser = require('react-dev-utils/openBrowser')
+const killPort = require('kill-port')
 const {
   Box,
   Flex,
@@ -45,9 +46,10 @@ class Project extends React.Component {
       listening: false,
     }
 
-    this.start = () => {
+    this.start = async () => {
       const { project, update } = this.props
       const { dirname } = project
+      const killed = await killPort(3000)
       const promise = run('npm', [ 'start' ], {
         cwd: dirname,
         onLog: msg => {
@@ -162,9 +164,6 @@ class Project extends React.Component {
                   innerRef: ref => this.preview = ref,
                   onCapture: this.handleCapture
                 })
-                /* h(ButtonTransparent, {
-                    onClick: e => { this.preview && this.preview.reload() }
-                  }, h(RefreshIcon, {})) */
               )
           : project.thumbnail
             ? h(Image, {
@@ -180,21 +179,6 @@ class Project extends React.Component {
                 }
               })
         )
-
-        /*
-          h(Box, {
-            py: 3
-          },
-            h(NavLink, {
-              color: 'red',
-              fontSize: 0,
-              px: 0,
-              onClick: e => {
-                update(removeProject(name))
-              }
-            }, 'Remove Project')
-          )
-        */
       )
     )
   }

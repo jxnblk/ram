@@ -1,5 +1,5 @@
 const React = require('react')
-const { BrowserWindow, getCurrentWindow } = require('electron').remote
+const { getCurrentWindow } = require('electron').remote
 const h = React.createElement
 
 class Preview extends React.Component {
@@ -15,13 +15,12 @@ class Preview extends React.Component {
       const { zoom } = this.props
       this.root.setZoomFactor(zoom)
       setTimeout(() => this.capture(), 1000)
-      // this.capture()
     }
 
     this.capture = () => {
       if (!this.root) return
       const rect = this.root.getBoundingClientRect()
-      const win = getCurrentWindow() // BrowserWindow.getFocusedWindow()
+      const win = getCurrentWindow()
       const opts = {
         x: Math.floor(rect.left),
         y: Math.floor(rect.top),
@@ -29,13 +28,8 @@ class Preview extends React.Component {
         height: rect.height
       }
       win.capturePage(opts, (img) => {
-        const datauri = img.toDataURL({
-          // todo: check for display resolution
-          // doesn't seem to actually be scaling
-          // scaleFactor: 2.0
-        })
+        const datauri = img.toDataURL({})
         this.props.onCapture(datauri)
-        // this.setFaviconImage(datauri)
       })
     }
   }
