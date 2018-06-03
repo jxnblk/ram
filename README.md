@@ -1,6 +1,5 @@
 
-# RAM
-## React App Manager
+# RAM: React App Manager
 
 **BETA**
 
