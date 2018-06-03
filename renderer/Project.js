@@ -91,17 +91,23 @@ class Project extends React.Component {
 
     this.start = async () => {
       const { project, update } = this.props
-      const { dirname } = project
-      const killed = await killPort(3000)
-      update(pushLog('npm start'))
-      const promise = run('npm', [ 'start' ], {
+      const {
+        dirname,
+        port = 3000
+      } = project
+      const killed = await killPort(port)
+      const args = project.run ? project.run.split(' ') : [ 'start' ]
+
+      update(pushLog([ 'npm', ...args ].join(' ')))
+      const promise = run('npm', args, {
         cwd: dirname,
         onLog: msg => {
           update(pushLog(msg))
           if (REG.test(msg)) {
-            const port = getPort(msg)
-            if (port !== 3000) {
-              log.info('port change:', port)
+            // todo: handle port mismatches
+            const outPort = getPort(msg)
+            if (outPort !== port) {
+              log.info('port change:', outPort)
             }
             this.setState({ listening: true })
           }
@@ -256,7 +262,7 @@ class Project extends React.Component {
           h(Box, { mx: 'auto' }),
           h(Text, { fontSize: 1, my: 2 },
             'This will run: ',
-            h(Code, { color: 'cyan' }, 'npm start')
+            h(Code, { color: 'cyan' }, 'npm ' + project.run || 'start')
           )
         ),
         h(Flex, { mx: -3 },

@@ -10,6 +10,29 @@ const modes = {
   debug
 }
 
+const appTypes = {
+  react: {
+    name: 'React App',
+    install: 'create-react-app',
+    defaults: {
+      type: 'create-react-app',
+      port: 3000
+    }
+  },
+  next: {
+    name: 'Next.js App',
+    install: 'create-next-app',
+    defaults: {
+      type: 'create-next-app',
+      port: 3000,
+      run: 'run dev'
+    }
+  }
+}
+
+appTypes.options = Object.keys(appTypes).map(key => ({ key, name: appTypes[key].name }))
+
 module.exports = {
-  modes
+  modes,
+  appTypes
 }

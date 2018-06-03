@@ -13,6 +13,7 @@ const {
   Button,
   Label,
   Input: RebassInput,
+  Select,
   Code,
 } = require('rebass')
 const styled = require('styled-components').default
@@ -26,7 +27,7 @@ const {
   openProject,
   pushLog
 } = require('./updaters')
-const { modes } = require('./constants')
+const { modes, appTypes } = require('./constants')
 const Layout = require('./Layout')
 const { createElement: h } = React
 
@@ -40,6 +41,7 @@ class CreateForm extends React.Component {
     super()
     this.state = Object.assign({}, props, {
       mode: modes.index,
+      type: 'react',
       name: '',
       errors: {},
       pending: false
@@ -75,10 +77,12 @@ class CreateForm extends React.Component {
     this.createApp = () => {
       this.setState({ pending: true })
       const { update } = this.props
-      const { name, dirname } = this.state
-      update(pushLog('npx create-react-app ' + name))
+      const { name, type, dirname } = this.state
+      const appType = appTypes[type]
+      const { install } = appType
+      update(pushLog(['npx', install, name].join(' ')))
       update(pushLog(''))
-      const promise = run('npx', [ 'create-react-app', name ], {
+      const promise = run('npx', [ install, name ], {
         cwd: dirname,
         onLog: msg => {
           update(pushLog(msg))
@@ -89,13 +93,11 @@ class CreateForm extends React.Component {
 
       child.on('close', () => {
         log.info('created app', name)
-        const project = {
+        const project = Object.assign({}, appType.defaults, {
           name,
-          type: 'create-react-app',
-          port: 3000,
           dirname: path.join(dirname, name),
           created: new Date().toString()
-        }
+        })
         this.setState({ pending: false })
         if (!fs.existsSync(project.dirname)) return
         update(pushProject(project))
@@ -113,11 +115,14 @@ class CreateForm extends React.Component {
   render () {
     const {
       update,
+      type,
       name,
       dirname,
       errors,
       pending
     } = this.state
+
+    const appType = appTypes[type]
 
     return (
       h(Layout, this.props,
@@ -139,7 +144,7 @@ class CreateForm extends React.Component {
             h('form', {
               onSubmit: this.handleSubmit
             },
-              h(Box, { mb: 3 },
+              h(Box, { mb: 2 },
                 h(Label, { htmlFor: 'dirname' }, 'Folder'),
                 h(Input, {
                   type: 'text',
@@ -155,7 +160,21 @@ class CreateForm extends React.Component {
                 }),
                 errors.dirname && h(Text, { color: 'red' }, errors.dirname)
               ),
-              h(Box, { mb: 3 },
+              h(Box, { mb: 2 },
+                h(Label, { htmlFor: 'type' }, 'Application Type'),
+                h(Select, {
+                  name: 'type',
+                  value: type,
+                  onChange: this.handleChange
+                },
+                  appTypes.options.map(({ key, name }) => h('option', {
+                    key,
+                    value: key,
+                    label: name
+                  }))
+                )
+              ),
+              h(Box, { mb: 2 },
                 h(Label, { htmlFor: 'name' }, 'Name'),
                 h(Input, {
                   type: 'text',
@@ -181,7 +200,9 @@ class CreateForm extends React.Component {
               }, 'Cancel'),
               h(Text, { fontSize: 1, my: 2 },
                 'This will run: ',
-                h(Code, { color: 'cyan' }, 'npx create-react-app ' + name)
+                h(Code, { color: 'cyan' },
+                  [ 'npx', appType.install,  name].join(' ')
+                )
               ),
               pending && h(Text, { color: 'blue' }, 'Creating App...'),
             )
