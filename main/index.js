@@ -16,8 +16,8 @@ const store = new Store({
   name,
   defaults: {
     window: {
-      width: 1280,
-      height: 640
+      width: 768,
+      height: 768
     },
     dirname: app.getPath('home'),
     projects: [],
