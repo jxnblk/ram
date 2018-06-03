@@ -4,6 +4,7 @@ const { app } = require('electron').remote
 const createMenu = require('functional-electron-menu')
 const log = require('electron-log')
 const open = require('react-dev-utils/openBrowser')
+const { setMode } = require('./updaters')
 
 const config = props => {
   const {
@@ -117,6 +118,11 @@ const config = props => {
         { type: 'separator' },
         { role: 'toggledevtools' },
         { role: 'reload' },
+        {
+          visible: false,
+          label: 'Debug',
+          click: e => update(setMode('debug'))
+        }
       ]
     }
   ]

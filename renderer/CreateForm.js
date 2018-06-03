@@ -74,11 +74,14 @@ class CreateForm extends React.Component {
 
     this.createApp = () => {
       this.setState({ pending: true })
+      const { update } = this.props
       const { name, dirname } = this.state
+      update(pushLog('npx create-react-app ' + name))
+      update(pushLog(''))
       const promise = run('npx', [ 'create-react-app', name ], {
         cwd: dirname,
         onLog: msg => {
-          this.props.update(pushLog(msg))
+          update(pushLog(msg))
         }
       })
 
@@ -95,8 +98,8 @@ class CreateForm extends React.Component {
         }
         this.setState({ pending: false })
         if (!fs.existsSync(project.dirname)) return
-        this.props.update(pushProject(project))
-        this.props.update(openProject(project.name))
+        update(pushProject(project))
+        update(openProject(project.name))
       })
 
       promise

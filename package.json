@@ -21,6 +21,7 @@
     "cross-spawn-with-kill": "^1.0.0",
     "electron-log": "^2.2.14",
     "electron-store": "^2.0.0",
+    "fix-path": "^2.1.0",
     "functional-electron-menu": "^1.0.0",
     "kill-port": "^1.2.0",
     "opn": "^5.3.0",

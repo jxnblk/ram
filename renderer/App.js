@@ -17,6 +17,7 @@ const TitleBar = require('./TitleBar')
 const ProjectList = require('./ProjectList')
 const CreateForm = require('./CreateForm')
 const Project = require('./Project')
+const Debug = require('./Debug')
 
 const MIN_NPM_VER = '>=5.2.0'
 const MIN_NODE_VER = '>=6.0.0'
@@ -74,6 +75,9 @@ class App extends Component {
         break
       case modes.detail:
         view = h(Project, this.state)
+        break
+      case modes.debug:
+        view = h(Debug, this.state)
         break
     }
 

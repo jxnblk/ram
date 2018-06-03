@@ -1,5 +1,8 @@
+require('fix-path')()
 const spawn = require('cross-spawn-with-kill')
 const log = require('electron-log')
+
+log.info('process.env.PATH', process.env.PATH)
 
 const run = (cmd, args, opts = {}) => {
   const child = spawn(cmd, args, opts)
