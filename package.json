@@ -1,7 +1,7 @@
 {
   "name": "ram",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React App Manager: create and run React applications with no command line or manual setup",
   "main": "main/index.js",
   "scripts": {
