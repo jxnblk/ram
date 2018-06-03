@@ -28,7 +28,6 @@ class App extends Component {
     this.state = Object.assign({}, props, {
       logs: [],
       project: null,
-      port: 3000,
       update: (...args) => this.setState(...args)
     })
   }
