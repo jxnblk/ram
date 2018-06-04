@@ -3,6 +3,7 @@ const h = React.createElement
 const log = require('electron-log')
 const open = require('opn')
 const openBrowser = require('react-dev-utils/openBrowser')
+const launchEditor = require('react-dev-utils/launchEditor.js')
 const killPort = require('kill-port')
 const readPkg = require('read-pkg-up')
 const {
@@ -250,6 +251,15 @@ class Project extends React.Component {
                 open(`file://${dirname}`)
               }
             }, 'Open in Finder'),
+            ' ',
+            h(RebassLink, {
+              fontSize: 0,
+              href: '#!',
+              onClick: e => {
+                e.preventDefault()
+                launchEditor(dirname, 1)
+              }
+            }, 'Open in Editor'),
             ' ',
             h(RebassLink, {
               href: '#!',
