@@ -1,14 +1,14 @@
-const index = 'index';
-const detail = 'detail';
-const create = 'create';
-const debug = 'debug';
+const index = 'index'
+const detail = 'detail'
+const create = 'create'
+const debug = 'debug'
 
 const modes = {
     index,
     detail,
     create,
     debug
-};
+}
 
 const appTypes = {
     react: {
@@ -56,14 +56,14 @@ const appTypes = {
             run: 'run serve'
         }
     }
-};
+}
 
 appTypes.options = Object.keys(appTypes).map(key => ({
     key,
     name: appTypes[key].name
-}));
+}))
 
 module.exports = {
     modes,
     appTypes
-};
+}
