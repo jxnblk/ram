@@ -21,6 +21,15 @@ Download for MacOS:
 
 [download]: https://github.com/jxnblk/ram/releases/latest
 
+RAM includes support for the following app types:
+
+- [Create React App][cra]
+- [Next.js][nextjs]
+- [Gatsby][gatsby]
+- [Razzle][razzle]
+- [Vue.js][vuejs]
+
+To add support for another app, please [open a pull request](#contributing).
 
 ## Motivation
 
@@ -62,7 +71,6 @@ Some alternatives to this particular Electron setup include:
 - Requires Node.js v6+ and npm v5.2+
 - Built in a few hours
 - No tests
-- Expects the port to be `3000`
 - Not tested on Linux or Windows
 
 
@@ -77,10 +85,8 @@ Some alternatives to this particular Electron setup include:
 ## Roadmap
 
 - [ ] Abstract create form to a more general purpose utility
-- [ ] Refactor React component architecture where needed
-- [ ] Configurable `port` option
 - [ ] npm depencendy management
-- [ ] Add support for [create-next-app](https://github.com/segmentio/create-next-app), [gatsby-cli](https://github.com/gatsbyjs/gatsby), etc.
+- [ ] Preact CLI support
 
 ## Contributing
 
@@ -112,3 +118,8 @@ No Babel transpilation is used, so be sure to use Electron-compatible modules an
 [pkg]: https://github.com/zeit/pkg
 [sandbox]: https://codesandbox.io
 
+[nextjs]: https://github.com/zeit/next.js/
+[create-next-app]: https://github.com/segmentio/create-next-app
+[gatsby]: https://github.com/gatsbyjs/gatsby
+[razzle]: https://github.com/jaredpalmer/razzle
+[vuejs]: https://github.com/vuejs/vue
