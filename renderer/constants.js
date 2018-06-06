@@ -55,6 +55,15 @@ const appTypes = {
       port: 8080,
       run: 'run serve'
     }
+  },
+  preact: {
+    name: 'Preact App',
+    install: 'preact-cli create default',
+    defaults: {
+      type: 'preact-cli',
+      port: 8080,
+      run: 'run start'
+    }
   }
 }
 
