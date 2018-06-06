@@ -240,34 +240,37 @@ class Project extends React.Component {
           }, 'Stop')
         ),
         h(Flex, { alignItems: 'baseline', mb: 4 },
-          h(Pre, { fontSize: 0 },
-            dirname,
-            ' ',
-            h(RebassLink, {
-              fontSize: 0,
-              href: '#!',
-              onClick: e => {
-                e.preventDefault()
-                open(`file://${dirname}`)
-              }
-            }, 'Open in Finder'),
-            ' ',
-            h(RebassLink, {
-              fontSize: 0,
-              href: '#!',
-              onClick: e => {
-                e.preventDefault()
-                launchEditor(dirname, 1)
-              }
-            }, 'Open in Editor'),
-            ' ',
-            h(RebassLink, {
-              href: '#!',
-              disabled: !listening,
-              color: listening ? 'cyan' : 'darken',
-              onClick: e => openBrowser(url),
-              children: url
-            })
+          h(Box, null,
+            h(Pre, { fontSize: 0 },
+              dirname,
+            ),
+            h(Pre, { fontSize: 0 },
+              h(RebassLink, {
+                fontSize: 0,
+                href: '#!',
+                onClick: e => {
+                  e.preventDefault()
+                  open(`file://${dirname}`)
+                }
+              }, 'Open in Finder'),
+              ' ',
+              h(RebassLink, {
+                fontSize: 0,
+                href: '#!',
+                onClick: e => {
+                  e.preventDefault()
+                  launchEditor(dirname, 1)
+                }
+              }, 'Open in Editor'),
+              ' ',
+              h(RebassLink, {
+                href: '#!',
+                disabled: !listening,
+                color: listening ? 'cyan' : 'darken',
+                onClick: e => openBrowser(url),
+                children: url
+              })
+            )
           ),
           h(Box, { mx: 'auto' }),
           h(Text, { fontSize: 1, my: 2 },

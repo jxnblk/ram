@@ -28,6 +28,7 @@ RAM includes support for the following app types:
 - [Gatsby][gatsby]
 - [Razzle][razzle]
 - [Vue.js][vuejs]
+- [Preact][preact]
 
 To add support for another app, please [open a pull request](#contributing).
 
@@ -86,7 +87,6 @@ Some alternatives to this particular Electron setup include:
 
 - [ ] Abstract create form to a more general purpose utility
 - [ ] npm depencendy management
-- [ ] Preact CLI support
 
 ## Contributing
 
@@ -123,3 +123,4 @@ No Babel transpilation is used, so be sure to use Electron-compatible modules an
 [gatsby]: https://github.com/gatsbyjs/gatsby
 [razzle]: https://github.com/jaredpalmer/razzle
 [vuejs]: https://github.com/vuejs/vue
+[preact]: https://github.com/developit/preact
