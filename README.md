@@ -71,7 +71,6 @@ Some alternatives to this particular Electron setup include:
 - Requires Node.js v6+ and npm v5.2+
 - Built in a few hours
 - No tests
-- Expects the port to be `3000`
 - Not tested on Linux or Windows
 
 
@@ -86,10 +85,8 @@ Some alternatives to this particular Electron setup include:
 ## Roadmap
 
 - [ ] Abstract create form to a more general purpose utility
-- [ ] Refactor React component architecture where needed
-- [ ] Configurable `port` option
 - [ ] npm depencendy management
-- [ ] Add support for [create-next-app](https://github.com/segmentio/create-next-app), [gatsby-cli][gatsby], etc.
+- [ ] Preact CLI support
 
 ## Contributing
 
