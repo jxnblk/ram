@@ -80,7 +80,7 @@ Some alternatives to this particular Electron setup include:
 - [Compositor Iso][iso] is a similar project aimed at solving a similar problem
 - Use [Create React App][cra] directly
 - [CodeSandbox][sandbox] is great for quick prototypes and demos with shareable URLs
-- Unreleased *Guppy* project by [Josh Comeau](https://mobile.twitter.com/JoshWComeau/status/1003060061113995264)
+- [Guppy](https://github.com/joshwcomeau/guppy) project by [Josh Comeau](https://twitter.com/JoshWComeau)
 
 
 ## Roadmap
